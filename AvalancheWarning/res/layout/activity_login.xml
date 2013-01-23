@@ -36,7 +36,7 @@
         android:layout_marginTop="32dp"
         android:ems="10"
         android:inputType="textPassword"
-        android:text="Password" />
+        android:text="@string/login_de_rbGerman" />
 
     <Button
         android:id="@+id/btnAbort"
@@ -45,7 +45,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:text="Abort" />
+        android:text="@string/login_en_btnAbort" />
 
     <Button
         android:id="@+id/btnLogin"
@@ -54,7 +54,7 @@
         android:layout_above="@+id/btnAbort"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:text="Login" />
+        android:text="@string/login_en_btnLogin" />
 
     <RadioGroup
         android:id="@+id/radioLanguage"
@@ -67,14 +67,14 @@
             android:id="@+id/rdoLanguageGerman"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="German" />
+            android:text="@string/login_de_rbGerman" />
 
         <RadioButton
             android:id="@+id/rdoLanguageEnglish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="English" />
+            android:text="@string/login_en_rbEnglish" />
     </RadioGroup>
 
 </RelativeLayout>
