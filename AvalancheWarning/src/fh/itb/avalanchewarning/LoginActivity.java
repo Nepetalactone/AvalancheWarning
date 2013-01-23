@@ -56,7 +56,7 @@ public class LoginActivity extends Activity {
 		_rgLanguage = (RadioGroup) findViewById(R.id.radioLanguage);
 		_rbEnglish = (RadioButton) findViewById(R.id.rdoLanguageEnglish);
 		_rbGerman = (RadioButton) findViewById(R.id.rdoLanguageGerman);
-
+		
 		// Init Language
 		englishRBClicked();
 		_tfUser.setText(_languageEnglish[0]);

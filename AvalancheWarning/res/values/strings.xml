@@ -4,5 +4,15 @@
     <string name="app_name">AvalancheWarning</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    <string name="login_en_tfUsrname">Username</string>
+    <string name="login_de_tfUsrname">Benutzername</string>
+    <string name="login_en_rbEnglish">English</string>
+    <string name="login_de_rbEnglish">Englisch</string>
+    <string name="login_en_rbGerman">German</string>
+    <string name="login_de_rbGerman">Deutsch</string>
+    <string name="login_en_btnLogin">Login</string>
+    <string name="login_de_btnLogin">Login</string>
+    <string name="login_en_btnAbort">Abort</string>
+    <string name="login_de_btnAbort">Beenden</string>
 
 </resources>
