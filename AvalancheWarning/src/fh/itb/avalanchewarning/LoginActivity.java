@@ -59,7 +59,7 @@ public class LoginActivity extends Activity {
 				if (checkedLogin) {
 					
 					// Username und Passwort waren Ok
-					Intent intObj = new Intent(LoginActivity.this, "ENTER UR CALSSNAME HERE!".class);
+					Intent intObj = new Intent(LoginActivity.this, MainActivity.class);
 					intObj.putExtra("Language", "German");
 					startActivity(intObj);
 
@@ -67,7 +67,7 @@ public class LoginActivity extends Activity {
 
 					// Username und Password waren nicht Ok
 					ErrorMessage.showErrorMessage(
-							"Username und Passwort falsch", "Ok",
+							getResources().getString(R.string.login_err_wrongPasswordOrUsername), "Ok",
 							v.getContext());
 				}
 			}
@@ -145,7 +145,7 @@ public class LoginActivity extends Activity {
 	 */
 	private boolean checkLogin(String username, String password) {
 
-		return false;
+		return true;
 	}
 
 }

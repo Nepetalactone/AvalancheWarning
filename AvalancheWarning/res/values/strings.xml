@@ -22,5 +22,7 @@
     <string name="main_forecast_Sunday">SUN</string>
     <string name="main_txtNoDate">No Date</string>
     <string name="main_txt_NoForecast">No Forecast</string>
+    <string name="login_pw">password</string>
+    <string name="login_err_wrongPasswordOrUsername">False username or password</string>
 
 </resources>

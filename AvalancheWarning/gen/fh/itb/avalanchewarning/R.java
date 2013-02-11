@@ -44,6 +44,8 @@ public final class R {
         public static final int hello_world=0x7f040001;
         public static final int login_btnAbort=0x7f040007;
         public static final int login_btnLogin=0x7f040006;
+        public static final int login_err_wrongPasswordOrUsername=0x7f040016;
+        public static final int login_pw=0x7f040015;
         public static final int login_rbEnglish=0x7f040004;
         public static final int login_rbGerman=0x7f040005;
         public static final int login_tfUsrname=0x7f040003;
