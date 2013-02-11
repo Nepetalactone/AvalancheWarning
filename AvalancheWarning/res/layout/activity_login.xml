@@ -22,7 +22,7 @@
         android:layout_marginBottom="88dp"
         android:ems="10"
         android:inputType="text"
-        android:text="@string/login_en_tfUsrname" >
+        android:text="@string/login_tfUsrname" >
 
         <requestFocus />
     </EditText>
