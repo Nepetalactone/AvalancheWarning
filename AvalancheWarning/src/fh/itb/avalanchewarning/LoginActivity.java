@@ -1,12 +1,8 @@
 package fh.itb.avalanchewarning;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -30,17 +26,6 @@ public class LoginActivity extends Activity {
 	String[] _languageGerman;
 	String[] _languageEnglish;
 
-	// Initialisierungsblock soll im optimalfall später mit Textfile ausgelagert
-	// werden!
-
-	// 0.Username, 1.German, 2.English, 3.Login, 4.Abort
-	{
-		_languageGerman = new String[] { "Benutzername", "Deutsch", "Englisch",
-				"Login", "Beenden" };
-		_languageEnglish = new String[] { "Username", "German", "English",
-				"Login", "Abort" };
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,12 +48,28 @@ public class LoginActivity extends Activity {
 				// LOGIN Button clicked!
 
 				// TODO: Validätsprüfung
-				// TODO: Ausgabe Fehlermeldung
 				// TODO: Weiterleitung auf Andere Form
 
 				String enteredUsername = _tfUser.getText().toString();
 				String enteredPassword = _tfPw.getText().toString();
 
+				boolean checkedLogin = checkLogin(enteredUsername,
+						enteredPassword);
+
+				if (checkedLogin) {
+					
+					// Username und Passwort waren Ok
+					Intent intObj = new Intent(LoginActivity.this, "ENTER UR CALSSNAME HERE!".class);
+					intObj.putExtra("Language", "German");
+					startActivity(intObj);
+
+				} else {
+
+					// Username und Password waren nicht Ok
+					ErrorMessage.showErrorMessage(
+							"Username und Passwort falsch", "Ok",
+							v.getContext());
+				}
 			}
 		});
 
@@ -98,6 +99,7 @@ public class LoginActivity extends Activity {
 	 * Hier werden alle Elemente auf die deutsche Sprache umgestellt.
 	 */
 	private void germanRBClicked() {
+
 		// falls noch kein Benutzername eingetragen wurde:
 		if (_tfUser.getText().toString().equals(_languageEnglish[0]))
 			_tfUser.setText(_languageGerman[0]);
@@ -115,6 +117,7 @@ public class LoginActivity extends Activity {
 	 * Hier werden alle Elemente auf die englische Sprache umgestellt.
 	 */
 	private void englishRBClicked() {
+
 		// fals noch kein Benutzername eingetragen wurde:
 		if (_tfUser.getText().toString().equals(_languageGerman[0]))
 			_tfUser.setText(_languageEnglish[0]);
@@ -130,6 +133,19 @@ public class LoginActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_login, menu);
 		return true;
+	}
+
+	/**
+	 * Methode wird aufgerufen, falls man Username und Password überprüfen
+	 * möchte
+	 * 
+	 * Hier werden Username und Passwort in der Datenbank geprüft. Stimmen
+	 * Benutezrname und Password überein, wird true, ansonsten false
+	 * zurückgegeben.
+	 */
+	private boolean checkLogin(String username, String password) {
+
+		return false;
 	}
 
 }
