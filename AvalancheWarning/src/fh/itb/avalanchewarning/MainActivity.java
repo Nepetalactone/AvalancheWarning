@@ -1,16 +1,23 @@
 package fh.itb.avalanchewarning;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
@@ -22,6 +29,7 @@ public class MainActivity extends Activity {
 	File storageDir;
 	LinkedList<File> photoList;
 	Socket socket;
+	String timeStamp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +43,7 @@ public class MainActivity extends Activity {
 		
 		photoList = new LinkedList<File>();
 		
-		refreshPhotoList();
+		//refreshPhotoList();
 		
 		Date date = new Date();
 		
@@ -91,28 +99,45 @@ public class MainActivity extends Activity {
 			        }
 				} */
 				
+				timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+				
+				//LocationManager locMan = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+				//locMan.
+				
 				Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				Uri savedImage = Uri.fromFile(new File("/sdcard/IMG_" + timeStamp + ".png"));
+				takePictureIntent.putExtra("output", savedImage);
 				startActivityForResult(takePictureIntent, 1);
-				  
+				
+				galleryAddPic();
 			}
 		});
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
 	
-	public void sendPhoto(File file) {
-		//TODO implement send function
+	private void galleryAddPic() {
+	    Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
+	    File folder = new File("/sdcard/");
+	    if (timeStamp != null){
+	    	File f = new File("/sdcard/IMG_" + timeStamp + ".png");
+		    Uri contentUri = Uri.fromFile(f);
+		    mediaScanIntent.setData(contentUri);
+		    this.sendBroadcast(mediaScanIntent);
+	    }
+}
+	
+	private void sendPhoto(){
+		File folder = new File("/sdcard/");
 		
-		if (!socket.isConnected()){
+		//TODO output stream
+		
+		if (socket.isConnected()){
+			for (File f : folder.listFiles()){
+				//TODO alle bilder über output senden
+			}
 		}
 	}
 	
-	public void refreshPhotoList(){
+	private void refreshPhotoList(){
 		photoList = new LinkedList<File>();
 		
 		for (File file : storageDir.listFiles()){

@@ -23,8 +23,8 @@ public class LoginActivity extends Activity {
 	RadioButton _rbEnglish;
 	RadioButton _rbGerman;
 
-	String[] _languageGerman;
-	String[] _languageEnglish;
+	//String[] _languageGerman;
+	//String[] _languageEnglish;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +84,12 @@ public class LoginActivity extends Activity {
 		// RadioButtonListener
 		_rgLanguage.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				if (checkedId == _rbGerman.getId())
-					germanRBClicked();
-				else
-					englishRBClicked();
+				if (checkedId == _rbGerman.getId()){
+					//germanRBClicked();
+				}
+				else{
+					//englishRBClicked();
+				}
 			}
 		});
 	}
@@ -98,7 +100,7 @@ public class LoginActivity extends Activity {
 	 * 
 	 * Hier werden alle Elemente auf die deutsche Sprache umgestellt.
 	 */
-	private void germanRBClicked() {
+	/*private void germanRBClicked() {
 
 		// falls noch kein Benutzername eingetragen wurde:
 		if (_tfUser.getText().toString().equals(_languageEnglish[0]))
@@ -108,7 +110,7 @@ public class LoginActivity extends Activity {
 		_rbEnglish.setText(_languageGerman[2]);
 		_btnLogin.setText(_languageGerman[3]);
 		_btnAbort.setText(_languageGerman[4]);
-	}
+	}*/
 
 	/**
 	 * Methode wird aufgerufen, falls der Radiobutton der Englischen Sprache
@@ -116,7 +118,7 @@ public class LoginActivity extends Activity {
 	 * 
 	 * Hier werden alle Elemente auf die englische Sprache umgestellt.
 	 */
-	private void englishRBClicked() {
+	/*private void englishRBClicked() {
 
 		// fals noch kein Benutzername eingetragen wurde:
 		if (_tfUser.getText().toString().equals(_languageGerman[0]))
@@ -126,7 +128,7 @@ public class LoginActivity extends Activity {
 		_rbEnglish.setText(_languageEnglish[2]);
 		_btnLogin.setText(_languageEnglish[3]);
 		_btnAbort.setText(_languageEnglish[4]);
-	}
+	}*/
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
