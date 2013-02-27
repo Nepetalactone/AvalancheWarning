@@ -147,6 +147,7 @@ public class LoginActivity extends Activity {
 	 */
 	private boolean checkLogin(String username, String password) {
 
+		//TODO Validierung
 		return true;
 	}
 
