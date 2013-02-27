@@ -10,6 +10,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import android.os.StrictMode;
+
 public class ConnectionWorker implements Runnable{
 	
 	Socket socket;
@@ -20,8 +22,10 @@ public class ConnectionWorker implements Runnable{
 	
 	public ConnectionWorker(MainActivity activity){
 		try {
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+			StrictMode.setThreadPolicy(policy);
 			this.activity = activity;
-			this.socket = new Socket("192.168.0.1", 9001);
+			this.socket = new Socket("localhost", 4711);
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream(), true);
 		} catch (UnknownHostException e) {
@@ -86,7 +90,5 @@ public class ConnectionWorker implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
-		  
-          
 	}
 }
