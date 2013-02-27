@@ -60,7 +60,7 @@ public class LoginActivity extends Activity {
 					
 					// Username und Passwort waren Ok
 					Intent intObj = new Intent(LoginActivity.this, MainActivity.class);
-					intObj.putExtra("Language", "German");
+					//intObj.putExtra("Language", "German");
 					startActivity(intObj);
 
 				} else {

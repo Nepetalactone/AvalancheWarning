@@ -24,5 +24,11 @@
     <string name="main_txt_NoForecast">No Forecast</string>
     <string name="login_pw">password</string>
     <string name="login_err_wrongPasswordOrUsername">False username or password</string>
+    <string name="main_btnSendGPS">Send current GPS-location</string>
+    <string name="main_txtView_CurrentRegion">Current region:</string>
+    <string name="main_txtAvalancheProbability_NoData">No data available</string>
+    <string name="main_txtAvalancheProbability_Low">Low</string>
+    <string name="main_txtAvalancheProbability_Medium">Medium</string>
+    <string name="main_txtAvalancheProbability_High">High</string>
 
 </resources>
