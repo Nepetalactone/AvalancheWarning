@@ -7,6 +7,11 @@ public class Region {
 	public Region(){
 	}
 	
+	public Region(String name, String probability){
+		this.regionName = name;
+		this.currentAvalancheProbability = probability;
+	}
+	
 	public void setRegionName(String name){
 		this.regionName = name;
 	}

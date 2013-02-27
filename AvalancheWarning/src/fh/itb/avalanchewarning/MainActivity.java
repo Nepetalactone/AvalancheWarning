@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -39,13 +40,15 @@ public class MainActivity extends Activity {
 	LocationManager locationManager;
 	List<String> regionNameList;
 	List<Region> regionList;
+	ConnectionWorker worker;
 	
-	private void addRegion(Region region){
+	public void addRegion(Region region){
 		regionList.add(region);
 		regionNameList.add(region.getRegionName());
 	}
 	
-	private void refreshRegionSpinner(){
+	
+	public void refreshRegionSpinner(){
 		Spinner spinner = (Spinner)findViewById(R.id.spn_CurrentRegion);
 		String currentItem = (String)spinner.getSelectedItem();
 		TextView regionProbability = (TextView)findViewById(R.id.txtAvalancheProbability);
@@ -65,7 +68,7 @@ public class MainActivity extends Activity {
 		}
 	}
 	
-	private void initRegionList(){
+	public void initRegionList(){
 		regionNameList = new ArrayList<String>();
 		
 		Spinner spinner = (Spinner)findViewById(R.id.spn_CurrentRegion);
@@ -132,6 +135,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		this.worker = new ConnectionWorker(this);
 		
 		initRegionList();
 		initGPS();
@@ -171,7 +175,18 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-				//TODO send GPS
+				String longLat = location.getLongitude() + "||" + location.getLatitude();
+				worker.sendGPS(longLat);
+			}
+		});
+		
+		Button btnConnect = (Button)findViewById(R.id.btnConnect);
+		
+		btnConnect.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO connect
 			}
 		});
 	}
@@ -194,7 +209,7 @@ public class MainActivity extends Activity {
 		
 		if (socket.isConnected()){
 			for (File f : folder.listFiles()){
-				//TODO alle bilder über output senden
+				worker.sendPhoto(f);
 			}
 		}
 	}
