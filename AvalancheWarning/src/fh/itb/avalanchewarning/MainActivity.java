@@ -73,6 +73,17 @@ public class MainActivity extends Activity {
 
 	public void initRegionList() {
 		regionNameList = new ArrayList<String>();
+		testitest();
+/*		Spinner spinner = (Spinner) findViewById(R.id.spn_CurrentRegion);
+
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, regionNameList);
+		dataAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(dataAdapter); */
+	}
+	
+	public void testitest(){
 
 		Spinner spinner = (Spinner) findViewById(R.id.spn_CurrentRegion);
 
