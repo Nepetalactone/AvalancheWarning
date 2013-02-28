@@ -1,8 +1,10 @@
 package fh.itb.avalanchewarning;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,25 +79,15 @@ public class MainActivity extends Activity {
 			out.flush();
 			out.close();
 			
-		    int bytesRead;
-		    int current = 0;
-			
-			byte [] mybytearray  = new byte [12582912];
-		    InputStream is = socket.getInputStream();
-		    FileOutputStream fos = new FileOutputStream(photo.getAbsolutePath());
-		    BufferedOutputStream bos = new BufferedOutputStream(fos);
-		    bytesRead = is.read(mybytearray, 0, mybytearray.length);
-		    current = bytesRead;
-
-		    do {
-		       bytesRead =
-		          is.read(mybytearray, current, (mybytearray.length-current));
-		       if(bytesRead >= 0) current += bytesRead;
-		    } while(bytesRead > -1);
-
-		    bos.write(mybytearray, 0 , current);
-		    bos.flush();
-		    bos.close();
+			File myFile = new File (photo.getAbsolutePath());
+		    byte [] mybytearray  = new byte [(int)myFile.length()];
+		    FileInputStream fis = new FileInputStream(myFile);
+		    BufferedInputStream bis = new BufferedInputStream(fis);
+		    bis.read(mybytearray, 0, mybytearray.length);
+		    OutputStream os = socket.getOutputStream();
+		    System.out.println("Sending...");
+		    os.write(mybytearray, 0, mybytearray.length);
+		    os.flush();
 		    return true;
 		} catch (IOException e) {
 			e.printStackTrace();
