@@ -2,17 +2,20 @@ package fh.itb.avalanchewarning;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,6 +30,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Context;
@@ -68,27 +72,26 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	//Sendet ein einzelnes foto
+
+	// Sendet ein einzelnes foto
 	public boolean sendPhoto(File photo) {
 		PrintWriter out;
 		try {
 			out = new PrintWriter(socket.getOutputStream(), true);
 			out.write("Bild");
 			out.flush();
-			out.close();
-			
-			File myFile = new File (photo.getAbsolutePath());
-		    byte [] mybytearray  = new byte [(int)myFile.length()];
-		    FileInputStream fis = new FileInputStream(myFile);
-		    BufferedInputStream bis = new BufferedInputStream(fis);
-		    bis.read(mybytearray, 0, mybytearray.length);
-		    OutputStream os = socket.getOutputStream();
-		    System.out.println("Sending...");
-		    os.write(mybytearray, 0, mybytearray.length);
-		    os.flush();
-		    return true;
+			//out.close();
+
+			File myFile = new File(photo.getAbsolutePath());
+			byte[] mybytearray = new byte[(int) myFile.length()];
+			FileInputStream fis = new FileInputStream(myFile);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			bis.read(mybytearray, 0, mybytearray.length);
+			OutputStream os = socket.getOutputStream();
+			System.out.println("Sending...");
+			os.write(mybytearray, 0, mybytearray.length);
+			os.flush();
+			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
@@ -209,6 +212,18 @@ public class MainActivity extends Activity {
 		ListenThread lt = new ListenThread(tempdata);
 		lt.start();
 
+		try {
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+					.permitAll().build();
+			StrictMode.setThreadPolicy(policy);
+			this.socket = new Socket("10.0.2.2", 4711);
+		} catch (UnknownHostException e) {
+			System.out.println("UNKNOWN HOST");
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		initGPS();
 		initForecast();
 
@@ -242,35 +257,31 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-						.format(new Date());
-
-				Intent takePictureIntent = new Intent(
-						MediaStore.ACTION_IMAGE_CAPTURE);
-				Uri savedImage = Uri.fromFile(new File("/sdcard/IMG_"
-						+ timeStamp + ".png"));
-				takePictureIntent.putExtra("output", savedImage);
-				startActivityForResult(takePictureIntent, 1);
-
-				galleryAddPic();
+				/*
+				 * timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+				 * .format(new Date());
+				 * 
+				 * Intent takePictureIntent = new Intent(
+				 * MediaStore.ACTION_IMAGE_CAPTURE); Uri savedImage =
+				 * Uri.fromFile(new File("/sdcard/IMG_" + timeStamp + ".png"));
+				 * takePictureIntent.putExtra("output", savedImage);
+				 * startActivityForResult(takePictureIntent, 1);
+				 * 
+				 * galleryAddPic();
+				 */
 				sendPhotos();
 			}
 		});
-
-		Button btnGPS = (Button) findViewById(R.id.btnPhoto);
-
-		btnGPS.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Location location = locationManager
-						.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-				String longLat = location.getLongitude() + "||"
-						+ location.getLatitude();
-				sendGPS(longLat);
-			}
-		});
-
+		/*
+		 * Button btnGPS = (Button) findViewById(R.id.btnPhoto);
+		 * 
+		 * btnGPS.setOnClickListener(new View.OnClickListener() {
+		 * 
+		 * @Override public void onClick(View v) { Location location =
+		 * locationManager .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		 * String longLat = location.getLongitude() + "||" +
+		 * location.getLatitude(); sendGPS(longLat); } });
+		 */
 		Button btnConnect = (Button) findViewById(R.id.btnConnect);
 
 		btnConnect.setOnClickListener(new View.OnClickListener() {
@@ -294,24 +305,24 @@ public class MainActivity extends Activity {
 			this.sendBroadcast(mediaScanIntent);
 		}
 	}
-	
-	//versucht alle erstellten Fotos zu verschicken
-	//falls ein Foto erfolgreich verschickt wurde wird es gelöscht
+
+	// versucht alle erstellten Fotos zu verschicken
+	// falls ein Foto erfolgreich verschickt wurde wird es gelöscht
 	private void sendPhotos() {
 		File folder = new File("/sdcard/");
 
 		boolean successful = false;
-		if (socket.isConnected()) {
-			for (File f : folder.listFiles()) {
+		for (File f : folder.listFiles()) {
+
+			if (f.getName().endsWith(".png")) {
 				successful = sendPhoto(f);
-				
-				if (successful == true){
+
+				if (successful == true) {
 					f.delete();
 				}
 			}
 		}
 	}
-	
 
 	private void refreshPhotoList() {
 		photoList = new LinkedList<File>();
