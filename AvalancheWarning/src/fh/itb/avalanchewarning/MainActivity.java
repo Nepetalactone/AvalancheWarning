@@ -4,6 +4,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +29,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -33,66 +39,99 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
+	public void sendGPS(String GPSData) {
+		PrintWriter out;
+		try {
+			out = new PrintWriter(socket.getOutputStream(), true);
+			out.write("GPS");
+			out.flush();
+			out.write(GPSData);
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void sendInfo() {
+		PrintWriter out;
+		try {
+			out = new PrintWriter(socket.getOutputStream(), true);
+			out.write("Info");
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void sendPhoto(File photo) {
+		PrintWriter out;
+		try {
+			out = new PrintWriter(socket.getOutputStream(), true);
+			out.write("Bild");
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ObjectOutputStream oos;
+		try {
+			oos = new ObjectOutputStream(socket.getOutputStream());
+			oos.writeObject(photo);
+			oos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	File storageDir;
 	LinkedList<File> photoList;
 	Socket socket;
 	String timeStamp;
 	LocationManager locationManager;
 	List<String> regionNameList;
-	List<Region> regionList;
-	ConnectionWorker worker;
+	TempData tempdata;
+	String[] warnings;
 
-	public void addRegion(Region region) {
-		regionList.add(region);
-		regionNameList.add(region.getRegionName());
-	}
+	/**
+	 * Diese Methode aktualisiert die auf der Aktiviti ersichtlichen Daten.
+	 * Hierfür werden die aktuellen Informationen aus einem TempDataobjekt
+	 * geholt und eingefügt.
+	 */
+	public void refreshData() {
+		if (!tempdata.getData().equals("")) {
+			String[] splitMessage = tempdata.getData().split("--");
+			// 0 = wetter morgen | 1= wetter übermorgen
+			String[] wetter = splitMessage[0].split("##");
+			// 0 = region1 __ wetterkondition | 1= region2 usw...
+			String[] locations = splitMessage[1].split("##");
 
-	public void refreshRegionSpinner() {
-		Spinner spinner = (Spinner) findViewById(R.id.spn_CurrentRegion);
-		String currentItem = (String) spinner.getSelectedItem();
-		TextView regionProbability = (TextView) findViewById(R.id.txtAvalancheProbability);
+			// Wettertexte setzen
+			((TextView) findViewById(R.id.txtForecast1)).setText(wetter[0]);
+			((TextView) findViewById(R.id.txtForecast2)).setText(wetter[1]);
 
-		for (Region item : regionList) {
-			if (item.getRegionName() == currentItem) {
-				if (item.getCurrentAvalancheProbability() == "LOW") {
-					regionProbability
-							.setText(R.string.main_txtAvalancheProbability_Low);
-				} else if (item.getCurrentAvalancheProbability() == "MEDIUM") {
-					regionProbability
-							.setText(R.string.main_txtAvalancheProbability_Medium);
-				} else if (item.getCurrentAvalancheProbability() == "HIGH") {
-					regionProbability
-							.setText(R.string.main_txtAvalancheProbability_High);
-				} else {
-					regionProbability
-							.setText(R.string.main_txtAvalancheProbability_NoData);
-				}
+			// daten von den locations vorbereiten
+			warnings = new String[locations.length];
+			regionNameList = new ArrayList<String>();
+			String[] temp;
+			for (int i = 0; i < locations.length; i++) {
+				temp = locations[i].split("__");
+				regionNameList.add(temp[0]);
+				warnings[i] = temp[1];
 			}
+			((TextView) findViewById(R.id.txtAvalancheProbability))
+					.setText(warnings[0]);
 		}
-	}
 
-	public void initRegionList() {
-		regionNameList = new ArrayList<String>();
-		testitest();
-/*		Spinner spinner = (Spinner) findViewById(R.id.spn_CurrentRegion);
-
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, regionNameList);
-		dataAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(dataAdapter); */
-	}
-	
-	public void testitest(){
-
+		// locations in Spinner eintragen
 		Spinner spinner = (Spinner) findViewById(R.id.spn_CurrentRegion);
-
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, regionNameList);
 		dataAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(dataAdapter);
-
 	}
 
 	private void initGPS() {
@@ -154,14 +193,13 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		tempdata = new TempData();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		this.worker = new ConnectionWorker(this);
-		Thread thread = new Thread(this.worker);
-		thread.start();
+		ListenThread lt = new ListenThread(tempdata);
+		lt.start();
 
-		initRegionList();
 		initGPS();
 		initForecast();
 
@@ -174,8 +212,22 @@ public class MainActivity extends Activity {
 
 		// refreshPhotoList();
 
-		Button btnPhoto = (Button) findViewById(R.id.btnPhoto);
+		Spinner spinner = (Spinner) findViewById(R.id.spn_CurrentRegion);
+		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parentView,
+					View selectedItemView, int position, long id) {
+				((TextView) findViewById(R.id.txtAvalancheProbability))
+						.setText(warnings[position]);
+			}
 
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) {
+				// your code here
+			}
+
+		});
+		Button btnPhoto = (Button) findViewById(R.id.btnPhoto);
 		btnPhoto.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -205,7 +257,7 @@ public class MainActivity extends Activity {
 						.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 				String longLat = location.getLongitude() + "||"
 						+ location.getLatitude();
-				worker.sendGPS(longLat);
+				sendGPS(longLat);
 			}
 		});
 
@@ -215,9 +267,10 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO connect
+				refreshData();
 			}
 		});
+		refreshData();
 	}
 
 	private void galleryAddPic() {
@@ -239,7 +292,7 @@ public class MainActivity extends Activity {
 
 		if (socket.isConnected()) {
 			for (File f : folder.listFiles()) {
-				worker.sendPhoto(f);
+				sendPhoto(f);
 			}
 		}
 	}
