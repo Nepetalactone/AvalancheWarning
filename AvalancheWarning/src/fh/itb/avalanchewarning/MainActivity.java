@@ -137,6 +137,8 @@ public class MainActivity extends Activity {
 		
 		this.worker = new ConnectionWorker(this);
 		
+		Thread thread = new Thread(worker);
+		
 		initRegionList();
 		initGPS();
 		initForecast();
