@@ -1,9 +1,11 @@
 package fh.itb.avalanchewarning;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -64,25 +66,40 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
-
-	public void sendPhoto(File photo) {
+	
+	
+	//Sendet ein einzelnes foto
+	public boolean sendPhoto(File photo) {
 		PrintWriter out;
 		try {
 			out = new PrintWriter(socket.getOutputStream(), true);
 			out.write("Bild");
 			out.flush();
+			out.close();
+			
+		    int bytesRead;
+		    int current = 0;
+			
+			byte [] mybytearray  = new byte [12582912];
+		    InputStream is = socket.getInputStream();
+		    FileOutputStream fos = new FileOutputStream(photo.getAbsolutePath());
+		    BufferedOutputStream bos = new BufferedOutputStream(fos);
+		    bytesRead = is.read(mybytearray, 0, mybytearray.length);
+		    current = bytesRead;
+
+		    do {
+		       bytesRead =
+		          is.read(mybytearray, current, (mybytearray.length-current));
+		       if(bytesRead >= 0) current += bytesRead;
+		    } while(bytesRead > -1);
+
+		    bos.write(mybytearray, 0 , current);
+		    bos.flush();
+		    bos.close();
+		    return true;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		ObjectOutputStream oos;
-		try {
-			oos = new ObjectOutputStream(socket.getOutputStream());
-			oos.writeObject(photo);
-			oos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return false;
 		}
 	}
 
@@ -244,6 +261,7 @@ public class MainActivity extends Activity {
 				startActivityForResult(takePictureIntent, 1);
 
 				galleryAddPic();
+				sendPhotos();
 			}
 		});
 
@@ -284,18 +302,24 @@ public class MainActivity extends Activity {
 			this.sendBroadcast(mediaScanIntent);
 		}
 	}
-
-	private void sendPhoto() {
+	
+	//versucht alle erstellten Fotos zu verschicken
+	//falls ein Foto erfolgreich verschickt wurde wird es gelöscht
+	private void sendPhotos() {
 		File folder = new File("/sdcard/");
 
-		// TODO output stream
-
+		boolean successful = false;
 		if (socket.isConnected()) {
 			for (File f : folder.listFiles()) {
-				sendPhoto(f);
+				successful = sendPhoto(f);
+				
+				if (successful == true){
+					f.delete();
+				}
 			}
 		}
 	}
+	
 
 	private void refreshPhotoList() {
 		photoList = new LinkedList<File>();
