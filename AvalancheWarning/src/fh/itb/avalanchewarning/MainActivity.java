@@ -67,6 +67,7 @@ public class MainActivity extends Activity {
 			out = new PrintWriter(socket.getOutputStream(), true);
 			out.write("Info");
 			out.flush();
+			out.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

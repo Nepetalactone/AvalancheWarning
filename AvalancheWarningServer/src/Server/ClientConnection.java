@@ -44,17 +44,22 @@ public class ClientConnection extends Thread {
 				while (message.equals("")) {
 					message = (_reader.readLine());
 				}
-				System.out.println("Geoinformationen erhalten: " + message);
+				System.out.println("Geoinformationen erhalten: Longitude: " + message.split("||")[0]
+						+ ", Latitude: " + message.split("||")[1]);
+				message = "";
 				break;
-			case "InfoBild":
+			case "Bild":
 				System.out.println("Bild wird empfangen");
 				saveFile(_socket.getInputStream());
+				message = "";
 				break;
 			case "Info":
 				_server.sendMessage(_server.getCurrentInformations(), this);
+				message = "";
 				break;
 			default:
 				System.out.println("Invalide Eingabe: " + message);
+				message = "";
 			}
 		} catch (Exception e) {
 			System.out.println("Fehler bei den gesendeten Dateien");
