@@ -14,6 +14,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 public class ClientConnection extends Thread {
 
@@ -21,10 +22,13 @@ public class ClientConnection extends Thread {
 	Server _server;
 	BufferedReader _reader;
 	String message;
+	HashMap<String, String> _users;
 
-	public ClientConnection(Socket socket, Server server) {
+	public ClientConnection(Socket socket, Server server,
+			HashMap<String, String> user) {
 		_socket = socket;
 		_server = server;
+		_users = user;
 	}
 
 	public void run() {
@@ -43,6 +47,23 @@ public class ClientConnection extends Thread {
 					message = "";
 					message = (_reader.readLine());
 					System.out.println("Geoinformationen erhalten: " + message);
+					break;
+				case "Login":
+					System.out.println("empfange daten");
+						message = (_reader.readLine());
+					
+					System.out.println("empfangen: "+ message);
+					String[] tempinfo = message.split(" ");
+					String returnmessage;
+					System.out.println(tempinfo[0] + "___" + tempinfo[1]);
+					System.out.println(_users.get(tempinfo[0]));
+					if (tempinfo[1].equals(_users.get(tempinfo[0])))
+						returnmessage = "Success";
+					else
+						returnmessage = "Failure";
+					System.out.println("returnmess:" + returnmessage);
+					_server.sendMessage(returnmessage, this);
+					System.out.println("login beendet ");
 					break;
 				case "Bild":
 					System.out.println("Bild wird empfangen");
@@ -88,8 +109,8 @@ public class ClientConnection extends Thread {
 		InputStream is = inputStr;
 		FileOutputStream fos = new FileOutputStream(fileName);
 		BufferedOutputStream bos = new BufferedOutputStream(fos);
-		//bytesRead = is.read(mybytearray, 0, mybytearray.length);
-		//current = bytesRead;
+		// bytesRead = is.read(mybytearray, 0, mybytearray.length);
+		// current = bytesRead;
 		do {
 			bytesRead = is.read(mybytearray, current,
 					(mybytearray.length - current));
