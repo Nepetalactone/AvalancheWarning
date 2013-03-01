@@ -46,7 +46,7 @@ public class ClientConnection extends Thread {
 				}
 				System.out.println("Geoinformationen erhalten: " + message);
 				break;
-			case "Bild":
+			case "InfoBild":
 				System.out.println("Bild wird empfangen");
 				saveFile(_socket.getInputStream());
 				break;
@@ -54,7 +54,7 @@ public class ClientConnection extends Thread {
 				_server.sendMessage(_server.getCurrentInformations(), this);
 				break;
 			default:
-				System.out.println("Invalide Eingabe");
+				System.out.println("Invalide Eingabe: " + message);
 			}
 		} catch (Exception e) {
 			System.out.println("Fehler bei den gesendeten Dateien");

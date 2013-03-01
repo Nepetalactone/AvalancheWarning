@@ -106,6 +106,7 @@ public class MainActivity extends Activity {
 	List<String> regionNameList;
 	TempData tempdata;
 	String[] warnings;
+	ListenThread lt;
 
 	/**
 	 * Diese Methode aktualisiert die auf der Aktiviti ersichtlichen Daten.
@@ -113,6 +114,7 @@ public class MainActivity extends Activity {
 	 * geholt und eingefügt.
 	 */
 	public void refreshData() {
+		lt.getForecast();
 		if (!tempdata.getData().equals("")) {
 			String[] splitMessage = tempdata.getData().split("--");
 			// 0 = wetter morgen | 1= wetter übermorgen
@@ -134,7 +136,7 @@ public class MainActivity extends Activity {
 				warnings[i] = temp[1];
 			}
 			((TextView) findViewById(R.id.txtAvalancheProbability))
-					.setText(warnings[0]);
+			.setText(warnings[0]);
 		}
 
 		// locations in Spinner eintragen
@@ -142,7 +144,7 @@ public class MainActivity extends Activity {
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, regionNameList);
 		dataAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(dataAdapter);
 	}
 
@@ -209,12 +211,11 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		ListenThread lt = new ListenThread(tempdata);
-		lt.start();
+		lt = new ListenThread(tempdata);
 
-		try {
+		/*try {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-					.permitAll().build();
+			.permitAll().build();
 			StrictMode.setThreadPolicy(policy);
 			this.socket = new Socket("10.0.2.2", 4711);
 		} catch (UnknownHostException e) {
@@ -222,14 +223,14 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 
 		initGPS();
 		initForecast();
 
 		storageDir = new File(
 				Environment
-						.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+				.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
 				"AvalanchePhotos");
 
 		photoList = new LinkedList<File>();
@@ -242,7 +243,7 @@ public class MainActivity extends Activity {
 			public void onItemSelected(AdapterView<?> parentView,
 					View selectedItemView, int position, long id) {
 				((TextView) findViewById(R.id.txtAvalancheProbability))
-						.setText(warnings[position]);
+				.setText(warnings[position]);
 			}
 
 			@Override
@@ -272,22 +273,28 @@ public class MainActivity extends Activity {
 				sendPhotos();
 			}
 		});
-		/*
-		 * Button btnGPS = (Button) findViewById(R.id.btnPhoto);
-		 * 
-		 * btnGPS.setOnClickListener(new View.OnClickListener() {
-		 * 
-		 * @Override public void onClick(View v) { Location location =
-		 * locationManager .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		 * String longLat = location.getLongitude() + "||" +
-		 * location.getLatitude(); sendGPS(longLat); } });
-		 */
+
+		Button btnGPS = (Button) findViewById(R.id.btnSendGPS);
+
+		btnGPS.setOnClickListener(new View.OnClickListener() {
+
+			@Override 
+			public void onClick(View v) { 
+				Location location =
+						locationManager .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+				String longLat = location.getLongitude() + "||" +
+						location.getLatitude(); 
+				lt.sendGPS(longLat); 
+			} 
+		});
+
 		Button btnConnect = (Button) findViewById(R.id.btnConnect);
 
 		btnConnect.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				lt.getForecast();
 				refreshData();
 			}
 		});
@@ -315,7 +322,7 @@ public class MainActivity extends Activity {
 		for (File f : folder.listFiles()) {
 
 			if (f.getName().endsWith(".png")) {
-				successful = sendPhoto(f);
+				successful = lt.sendPhoto(f);
 
 				if (successful == true) {
 					f.delete();
