@@ -1,24 +1,47 @@
 package Server;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Properties;
 
 public class Server {
 
 	private LinkedList<ClientConnection> _connections;
 	private ConnectionListener _listener;
 	private String _currentInformations;
+	private HashMap<String, String> _users;
 
 	public Server(String info) {
+		init();
 		System.out.println("Server started");
 		_connections = new LinkedList<ClientConnection>();
-		_listener = new ConnectionListener(this);
+		_listener = new ConnectionListener(this, _users);
 		_listener.start();
 		_currentInformations = info;
 	}
-
+	/**
+	 * Diese Methode initialisiert die Benutzernamen und Kennwörter
+	 * der einzellnen Benutzer
+	 */
+	private void init() {
+		try {
+			Properties p = new Properties();
+			p.load(new FileInputStream("users.ini"));
+			String[]users = p.getProperty("user").split(" ");
+			String[]passwords = p.getProperty("password").split(" ");
+			_users = new HashMap<String, String>();
+			for(int i = 0; i< users.length;i++)
+			{
+				_users.put(users[i], passwords[i]);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
 	/**
 	 * Durch diese Methode werden Verbindungen hinzugefügt
 	 * 

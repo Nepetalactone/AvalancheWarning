@@ -1,6 +1,14 @@
 package fh.itb.avalanchewarning;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
@@ -28,6 +36,7 @@ public class LoginActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
@@ -146,9 +155,48 @@ public class LoginActivity extends Activity {
 	 * zurückgegeben.
 	 */
 	private boolean checkLogin(String username, String password) {
-
-		//TODO Validierung
+//Verbindung zum Server erstellen
 		return true;
+		/*
+		try {
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+			.permitAll().build();
+			StrictMode.setThreadPolicy(policy);
+			Socket socket = new Socket("10.0.2.2", 4711);
+			//validätsprüfung
+			
+			PrintWriter out;
+			out = new PrintWriter(socket.getOutputStream(), true);
+			out.println("Login");
+			out.flush();
+			String user = ((EditText)findViewById(R.id.txtUsername)).getText().toString();
+			String pw = ((EditText)findViewById(R.id.pwdUserpassword)).getText().toString();;
+			out.println(user + " " + pw);
+			out.flush();
+			//empfangen
+			
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					socket.getInputStream()));
+			
+			try{
+				if(reader.readLine().equals("Success"))
+						return true;
+				if(reader.readLine().equals("Failure"))
+						return false;
+				else
+					return false;
+			
+			} catch (IOException e){
+				e.printStackTrace();
+			}
+		} catch (UnknownHostException e) {
+			System.out.println("UNKNOWN HOST");
+			return false;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;*/
 	}
 
 }
