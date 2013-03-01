@@ -53,7 +53,7 @@ public class ClientConnection extends Thread {
 				saveFile(_socket.getInputStream());
 				message = "";
 				break;
-			case "Info":
+			case "InfoBild":
 				_server.sendMessage(_server.getCurrentInformations(), this);
 				message = "";
 				break;

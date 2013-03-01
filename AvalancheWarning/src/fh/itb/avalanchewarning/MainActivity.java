@@ -46,6 +46,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
+	
+	File storageDir;
+	LinkedList<File> photoList;
+	Socket socket;
+	String timeStamp;
+	LocationManager locationManager;
+	List<String> regionNameList;
+	TempData tempdata;
+	String[] warnings;
+	ListenThread lt;
 
 	public void sendGPS(String GPSData) {
 		PrintWriter out;
@@ -99,15 +109,6 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	File storageDir;
-	LinkedList<File> photoList;
-	Socket socket;
-	String timeStamp;
-	LocationManager locationManager;
-	List<String> regionNameList;
-	TempData tempdata;
-	String[] warnings;
-	ListenThread lt;
 
 	/**
 	 * Diese Methode aktualisiert die auf der Aktiviti ersichtlichen Daten.
