@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AvalancheWarning</string>
+    <string name="hello_world">Hallo Welt!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="login_tfUsrname">Benutzername</string>
+    <string name="login_rbEnglish">English</string>
+    <string name="login_rbGerman">German</string>
+    <string name="login_btnLogin">Login</string>
+    <string name="login_btnAbort">Abbrechen</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="main_tfAvalanche_probability">Lawinengefahr:</string>
+    <string name="main_btnSendPhotos">Sende Foto</string>
+    <string name="main_btnMainMenu">Hauptmenü</string>
+    <string name="main_forecast_Monday">MON</string>
+    <string name="main_forecast_Tuesday">DIE</string>
+    <string name="main_forecast_Wednesday">MIT</string>
+    <string name="main_forecast_Thursday">DON</string>
+    <string name="main_forecast_Friday">FRE</string>
+    <string name="main_forecast_Saturday">SAM</string>
+    <string name="main_forecast_Sunday">SON</string>
+    <string name="main_txtNoDate">Kein Datum</string>
+    <string name="main_txt_NoForecast">Kein Ausblick</string>
+    <string name="login_pw">Passwort</string>
+    <string name="login_err_wrongPasswordOrUsername">Falscher Benutzername oder Passwort</string>
+    <string name="main_btnGetGPS">Hole derzeitige GPS-Position</string>
+    <string name="main_txtView_CurrentRegion">Derzeitige Region:</string>
+    <string name="main_txtAvalancheProbability_NoData">Keine Daten verfügbar</string>
+    <string name="main_txtAvalancheProbability_Low">Niedrig</string>
+    <string name="main_txtAvalancheProbability_Medium">Mittel</string>
+    <string name="main_txtAvalancheProbability_High">Hoch</string>
+    <string name="main_chkConnected_Connected">Verbunden</string>
+    <string name="main_btnConnect_Connect">Synchronisiere</string>
+    <string name="main_btnTakePhoto">Mach Foto</string>
+
+</resources>
