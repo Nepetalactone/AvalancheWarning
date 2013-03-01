@@ -16,8 +16,6 @@ public class ListenThread {
 
 	private TempData data;
 	private Socket socket;
-	private PrintWriter out;
-	private OutputStream os;
 
 	public ListenThread(TempData a) {
 		data = a;
@@ -26,8 +24,6 @@ public class ListenThread {
 			.permitAll().build();
 			StrictMode.setThreadPolicy(policy);
 			this.socket = new Socket("10.0.2.2", 4711);
-			out = new PrintWriter(socket.getOutputStream(), true);
-			os = socket.getOutputStream();
 
 		} catch (UnknownHostException e) {
 			System.out.println("UNKNOWN HOST");
@@ -39,11 +35,11 @@ public class ListenThread {
 
 	public void getForecast(){
 		String forecast = "";
+		PrintWriter out;
 		
 		try {
-			//out = new PrintWriter(socket.getOutputStream(), true);
+			out = new PrintWriter(socket.getOutputStream(), true);
 			
-			out.println("Info");
 			out.flush();
 			//out.close();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
@@ -65,22 +61,22 @@ public class ListenThread {
 	}
 
 	public boolean sendPhoto(File photo){
+		PrintWriter out;
 		try {
-			//out = new PrintWriter(socket.getOutputStream(), true);
+			out = new PrintWriter(socket.getOutputStream(), true);
 			out.println("Bild");
 			out.flush();
-			//out.close();
 
 			File myFile = new File(photo.getAbsolutePath());
 			byte[] mybytearray = new byte[(int) myFile.length()];
 			FileInputStream fis = new FileInputStream(myFile);
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			bis.read(mybytearray, 0, mybytearray.length);
-			//OutputStream os = socket.getOutputStream();
+			OutputStream os = socket.getOutputStream();
 			System.out.println("Sending...");
+			//wenns nicht geht ändere write in println!
 			os.write(mybytearray, 0, mybytearray.length);
 			os.flush();
-			//os.close();
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -92,12 +88,12 @@ public class ListenThread {
 		PrintWriter out;
 		
 		try {
+			//write ->println
 			out = new PrintWriter(socket.getOutputStream(), true);
-			out.write("GPS");
+			out.println("GPS");
 			out.flush();
-			out.write(GPSData);
+			out.println(GPSData);
 			out.flush();
-			out.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
