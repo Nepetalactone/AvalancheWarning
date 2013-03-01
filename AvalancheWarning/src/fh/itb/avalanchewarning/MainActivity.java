@@ -254,24 +254,32 @@ public class MainActivity extends Activity {
 			}
 
 		});
+		
+		Button btnTakePhoto = (Button) findViewById(R.id.btnTakePhoto);
+		btnTakePhoto.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				 timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+				  
+				 Intent takePictureIntent = new Intent(
+				 MediaStore.ACTION_IMAGE_CAPTURE); Uri savedImage =
+				 Uri.fromFile(new File("/sdcard/IMG_" + timeStamp + ".png"));
+				 takePictureIntent.putExtra("output", savedImage);
+				 startActivityForResult(takePictureIntent, 1);
+				  
+				 galleryAddPic();
+				
+			}
+			
+		});
+		
 		Button btnPhoto = (Button) findViewById(R.id.btnPhoto);
 		btnPhoto.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
-				/*
-				 * timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-				 * .format(new Date());
-				 * 
-				 * Intent takePictureIntent = new Intent(
-				 * MediaStore.ACTION_IMAGE_CAPTURE); Uri savedImage =
-				 * Uri.fromFile(new File("/sdcard/IMG_" + timeStamp + ".png"));
-				 * takePictureIntent.putExtra("output", savedImage);
-				 * startActivityForResult(takePictureIntent, 1);
-				 * 
-				 * galleryAddPic();
-				 */
 				sendPhotos();
 			}
 		});
@@ -284,9 +292,15 @@ public class MainActivity extends Activity {
 			public void onClick(View v) { 
 				Location location =
 						locationManager .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-				String longLat = location.getLongitude() + "--" +
+				String longLat = "Longitude: " + location.getLongitude() + ", Latitude: " +
 						location.getLatitude(); 
-				lt.sendGPS(longLat); 
+				
+				File gps = new File("/sdcard/" + longLat + ".gps");
+				boolean success = lt.sendGPS(longLat); 
+				if (success == true){
+					gps.delete();
+				}
+				lt = new ListenThread(tempdata);
 			} 
 		});
 
@@ -301,6 +315,19 @@ public class MainActivity extends Activity {
 			}
 		});
 		refreshData();
+	}
+	
+	private void sendAllGPS(){
+		File folder = new File("/sdcard/");
+		for (File f : folder.listFiles()){
+			if (f.getName().endsWith(".gps")){
+				boolean success = lt.sendGPS(f.getName().split(".gps")[0]);
+				
+				if (success == true){
+					f.delete();
+				}
+			}
+		}
 	}
 
 	private void galleryAddPic() {

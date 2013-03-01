@@ -11,7 +11,7 @@
     <string name="login_btnAbort">Abort</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="main_tfAvalanche_probability">Avalanche probability:</string>
-    <string name="main_btnPhoto">Send photo</string>
+    <string name="main_btnSendPhotos">Send photo</string>
     <string name="main_btnMainMenu">Main Menu</string>
     <string name="main_forecast_Monday">MON</string>
     <string name="main_forecast_Tuesday">TUE</string>
@@ -24,7 +24,7 @@
     <string name="main_txt_NoForecast">No Forecast</string>
     <string name="login_pw">password</string>
     <string name="login_err_wrongPasswordOrUsername">False username or password</string>
-    <string name="main_btnSendGPS">Send current GPS-location</string>
+    <string name="main_btnGetGPS">Get current GPS-location</string>
     <string name="main_txtView_CurrentRegion">Current region:</string>
     <string name="main_txtAvalancheProbability_NoData">No data available</string>
     <string name="main_txtAvalancheProbability_Low">Low</string>
@@ -32,5 +32,6 @@
     <string name="main_txtAvalancheProbability_High">High</string>
     <string name="main_chkConnected_Connected">Connected</string>
     <string name="main_btnConnect_Connect">Connect</string>
+    <string name="main_btnTakePhoto">Take Photo</string>
 
 </resources>
