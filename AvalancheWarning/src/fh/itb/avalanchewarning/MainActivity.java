@@ -57,6 +57,7 @@ public class MainActivity extends Activity {
 	String[] warnings;
 	ListenThread lt;
 
+	//sendet einen GPS-string an den Server
 	public void sendGPS(String GPSData) {
 		PrintWriter out;
 		try {
@@ -70,7 +71,8 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
-
+	
+	//sendet das Codewort "Info" an den Server um aktuelle Informationen zu erhalten
 	public void sendInfo() {
 		PrintWriter out;
 		try {
@@ -150,6 +152,7 @@ public class MainActivity extends Activity {
 		spinner.setAdapter(dataAdapter);
 	}
 
+	//initialisiert das GPS-modul
 	private void initGPS() {
 		locationManager = (LocationManager) this
 				.getSystemService(Context.LOCATION_SERVICE);
@@ -173,6 +176,7 @@ public class MainActivity extends Activity {
 				0, locationListener);
 	}
 
+	//initialisiert den Forecast mit den richtigen Tagnamen
 	private void initForecast() {
 		Date date = new Date();
 
@@ -310,13 +314,18 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				initForecast();
+				lt = new ListenThread(tempdata);
 				lt.getForecast();
 				refreshData();
+				sendAllGPS();
+				sendPhotos();
 			}
 		});
 		refreshData();
 	}
 	
+	//versucht alle GPS-aufzeichnungen zu verschicken
 	private void sendAllGPS(){
 		File folder = new File("/sdcard/");
 		for (File f : folder.listFiles()){
@@ -330,6 +339,7 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	//fügt erstellte bilder der Gallery hinzu
 	private void galleryAddPic() {
 		Intent mediaScanIntent = new Intent(
 				"android.intent.action.MEDIA_SCANNER_SCAN_FILE");
