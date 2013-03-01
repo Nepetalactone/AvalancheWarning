@@ -87,7 +87,7 @@ public class ListenThread {
 		}
 	}
 	
-	public void sendGPS(String GPSData){
+	public boolean sendGPS(String GPSData){
 		PrintWriter out;
 		
 		try {
@@ -97,9 +97,11 @@ public class ListenThread {
 			out.flush();
 			out.println(GPSData);
 			out.flush();
+			out.close();
+			return true;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 	}
 }

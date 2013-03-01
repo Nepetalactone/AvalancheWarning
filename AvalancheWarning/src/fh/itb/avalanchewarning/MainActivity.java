@@ -57,6 +57,7 @@ public class MainActivity extends Activity {
 	String[] warnings;
 	ListenThread lt;
 
+	//sendet einen GPS-string an den Server
 	public void sendGPS(String GPSData) {
 		PrintWriter out;
 		try {
@@ -70,7 +71,8 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
-
+	
+	//sendet das Codewort "Info" an den Server um aktuelle Informationen zu erhalten
 	public void sendInfo() {
 		PrintWriter out;
 		try {
@@ -150,6 +152,7 @@ public class MainActivity extends Activity {
 		spinner.setAdapter(dataAdapter);
 	}
 
+	//initialisiert das GPS-modul
 	private void initGPS() {
 		locationManager = (LocationManager) this
 				.getSystemService(Context.LOCATION_SERVICE);
@@ -173,6 +176,7 @@ public class MainActivity extends Activity {
 				0, locationListener);
 	}
 
+	//initialisiert den Forecast mit den richtigen Tagnamen
 	private void initForecast() {
 		Date date = new Date();
 
@@ -254,24 +258,32 @@ public class MainActivity extends Activity {
 			}
 
 		});
+		
+		Button btnTakePhoto = (Button) findViewById(R.id.btnTakePhoto);
+		btnTakePhoto.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				 timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+				  
+				 Intent takePictureIntent = new Intent(
+				 MediaStore.ACTION_IMAGE_CAPTURE); Uri savedImage =
+				 Uri.fromFile(new File("/sdcard/IMG_" + timeStamp + ".png"));
+				 takePictureIntent.putExtra("output", savedImage);
+				 startActivityForResult(takePictureIntent, 1);
+				  
+				 galleryAddPic();
+				
+			}
+			
+		});
+		
 		Button btnPhoto = (Button) findViewById(R.id.btnPhoto);
 		btnPhoto.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
-				/*
-				 * timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-				 * .format(new Date());
-				 * 
-				 * Intent takePictureIntent = new Intent(
-				 * MediaStore.ACTION_IMAGE_CAPTURE); Uri savedImage =
-				 * Uri.fromFile(new File("/sdcard/IMG_" + timeStamp + ".png"));
-				 * takePictureIntent.putExtra("output", savedImage);
-				 * startActivityForResult(takePictureIntent, 1);
-				 * 
-				 * galleryAddPic();
-				 */
 				sendPhotos();
 			}
 		});
@@ -284,9 +296,15 @@ public class MainActivity extends Activity {
 			public void onClick(View v) { 
 				Location location =
 						locationManager .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-				String longLat = location.getLongitude() + "--" +
+				String longLat = "Longitude: " + location.getLongitude() + ", Latitude: " +
 						location.getLatitude(); 
-				lt.sendGPS(longLat); 
+				
+				File gps = new File("/sdcard/" + longLat + ".gps");
+				boolean success = lt.sendGPS(longLat); 
+				if (success == true){
+					gps.delete();
+				}
+				lt = new ListenThread(tempdata);
 			} 
 		});
 
@@ -296,13 +314,32 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				initForecast();
+				lt = new ListenThread(tempdata);
 				lt.getForecast();
 				refreshData();
+				sendAllGPS();
+				sendPhotos();
 			}
 		});
 		refreshData();
 	}
+	
+	//versucht alle GPS-aufzeichnungen zu verschicken
+	private void sendAllGPS(){
+		File folder = new File("/sdcard/");
+		for (File f : folder.listFiles()){
+			if (f.getName().endsWith(".gps")){
+				boolean success = lt.sendGPS(f.getName().split(".gps")[0]);
+				
+				if (success == true){
+					f.delete();
+				}
+			}
+		}
+	}
 
+	//fügt erstellte bilder der Gallery hinzu
 	private void galleryAddPic() {
 		Intent mediaScanIntent = new Intent(
 				"android.intent.action.MEDIA_SCANNER_SCAN_FILE");

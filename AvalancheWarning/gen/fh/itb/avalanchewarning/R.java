@@ -20,8 +20,9 @@ public final class R {
         public static final int btnMainMenu=0x7f070008;
         public static final int btnPhoto=0x7f07000a;
         public static final int btnSendGPS=0x7f07000f;
+        public static final int btnTakePhoto=0x7f070014;
         public static final int linearLayout1=0x7f070000;
-        public static final int menu_settings=0x7f070014;
+        public static final int menu_settings=0x7f070015;
         public static final int pwdUserpassword=0x7f070002;
         public static final int radioLanguage=0x7f070005;
         public static final int rdoLanguageEnglish=0x7f070007;
@@ -55,9 +56,10 @@ public final class R {
         public static final int login_rbGerman=0x7f040005;
         public static final int login_tfUsrname=0x7f040003;
         public static final int main_btnConnect_Connect=0x7f04001e;
+        public static final int main_btnGetGPS=0x7f040017;
         public static final int main_btnMainMenu=0x7f04000b;
-        public static final int main_btnPhoto=0x7f04000a;
-        public static final int main_btnSendGPS=0x7f040017;
+        public static final int main_btnSendPhotos=0x7f04000a;
+        public static final int main_btnTakePhoto=0x7f04001f;
         public static final int main_chkConnected_Connected=0x7f04001d;
         public static final int main_forecast_Friday=0x7f040010;
         public static final int main_forecast_Monday=0x7f04000c;
