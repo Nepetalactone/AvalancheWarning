@@ -156,8 +156,8 @@ public class LoginActivity extends Activity {
 	 */
 	private boolean checkLogin(String username, String password) {
 //Verbindung zum Server erstellen
-		return true;
-		/*
+	//	return true;
+		
 		try {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
 			.permitAll().build();
@@ -179,15 +179,16 @@ public class LoginActivity extends Activity {
 					socket.getInputStream()));
 			
 			try{
-				if(reader.readLine().equals("Success"))
+				String x = reader.readLine();
+				if(x.equals("Success"))
 						return true;
-				if(reader.readLine().equals("Failure"))
+				if(x.equals("Failure"))
 						return false;
-				else
-					return false;
-			
+				((EditText)findViewById(R.id.txtUsername)).setText("HURENKIND " + x);
+			return false;
 			} catch (IOException e){
-				e.printStackTrace();
+				((EditText)findViewById(R.id.txtUsername)).setText("HURENKIND2 ");
+				return false;
 			}
 		} catch (UnknownHostException e) {
 			System.out.println("UNKNOWN HOST");
@@ -196,7 +197,6 @@ public class LoginActivity extends Activity {
 			e.printStackTrace();
 			return false;
 		}
-		return true;*/
 	}
 
 }

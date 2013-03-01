@@ -50,7 +50,7 @@ public class Server {
 	public void addConnection(ClientConnection s) {
 		_connections.add(s);
 		s.start();
-		sendMessage(_currentInformations , s);
+		
 	}
 
 	/**

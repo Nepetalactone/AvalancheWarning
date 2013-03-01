@@ -50,17 +50,21 @@ public class ClientConnection extends Thread {
 					break;
 				case "Login":
 					System.out.println("empfange daten");
-						message = (_reader.readLine());
-					
-					System.out.println("empfangen: "+ message);
+					message = (_reader.readLine());
+
+					System.out.println("empfangen: " + message);
 					String[] tempinfo = message.split(" ");
 					String returnmessage;
-					System.out.println(tempinfo[0] + "___" + tempinfo[1]);
-					System.out.println(_users.get(tempinfo[0]));
-					if (tempinfo[1].equals(_users.get(tempinfo[0])))
-						returnmessage = "Success";
-					else
+					try {
+						System.out.println(tempinfo[0] + "___" + tempinfo[1]);
+						System.out.println(_users.get(tempinfo[0]));
+						if (tempinfo[1].equals(_users.get(tempinfo[0])))
+							returnmessage = "Success";
+						else
+							returnmessage = "Failure";
+					} catch (Exception e) {
 						returnmessage = "Failure";
+					}
 					System.out.println("returnmess:" + returnmessage);
 					_server.sendMessage(returnmessage, this);
 					System.out.println("login beendet ");
