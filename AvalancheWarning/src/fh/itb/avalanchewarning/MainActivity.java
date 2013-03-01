@@ -325,10 +325,16 @@ public class MainActivity extends Activity {
 
 			if (f.getName().endsWith(".png")) {
 				successful = lt.sendPhoto(f);
-
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if (successful == true) {
 					f.delete();
 				}
+				lt = new ListenThread(tempdata);
 			}
 		}
 	}

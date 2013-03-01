@@ -61,15 +61,17 @@ public class ListenThread {
 	}
 
 	public boolean sendPhoto(File photo){
+		
+		Long length = photo.getTotalSpace();
 		PrintWriter out;
 		try {
 			out = new PrintWriter(socket.getOutputStream(), true);
 			out.println("Bild");
 			out.flush();
 
-			File myFile = new File(photo.getAbsolutePath());
-			byte[] mybytearray = new byte[(int) myFile.length()];
-			FileInputStream fis = new FileInputStream(myFile);
+			//File myFile = new File(photo.getAbsolutePath());
+			byte[] mybytearray = new byte[(int) photo.length()];
+			FileInputStream fis = new FileInputStream(photo);
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			bis.read(mybytearray, 0, mybytearray.length);
 			OutputStream os = socket.getOutputStream();
@@ -77,6 +79,7 @@ public class ListenThread {
 			//wenns nicht geht ändere write in println!
 			os.write(mybytearray, 0, mybytearray.length);
 			os.flush();
+			os.close();
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();

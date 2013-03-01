@@ -75,21 +75,21 @@ public class ClientConnection extends Thread {
 	 */
 	private void saveFile(InputStream inputStr) throws IOException {
 		// create socket
-		int filesize = 1000000; // filesize temporary hardcoded
+		int filesize = 100000; // filesize temporary hardcoded
 
 		int bytesRead;
 		int current = 0;
 
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
 				.format(new Date());
-		String fileName = "IMG_" + timeStamp + ".png";
+		String fileName = "IMG_" + timeStamp + ".jpg";
 
 		byte[] mybytearray = new byte[filesize];
 		InputStream is = inputStr;
 		FileOutputStream fos = new FileOutputStream(fileName);
 		BufferedOutputStream bos = new BufferedOutputStream(fos);
-		bytesRead = is.read(mybytearray, 0, mybytearray.length);
-		current = bytesRead;
+		//bytesRead = is.read(mybytearray, 0, mybytearray.length);
+		//current = bytesRead;
 		do {
 			bytesRead = is.read(mybytearray, current,
 					(mybytearray.length - current));
