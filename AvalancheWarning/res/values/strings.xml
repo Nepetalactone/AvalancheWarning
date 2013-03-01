@@ -31,7 +31,7 @@
     <string name="main_txtAvalancheProbability_Medium">Medium</string>
     <string name="main_txtAvalancheProbability_High">High</string>
     <string name="main_chkConnected_Connected">Connected</string>
-    <string name="main_btnConnect_Connect">Connect</string>
+    <string name="main_btnConnect_Connect">Synchronize</string>
     <string name="main_btnTakePhoto">Take Photo</string>
 
 </resources>
