@@ -283,7 +283,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) { 
 				Location location =
 						locationManager .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-				String longLat = location.getLongitude() + "||" +
+				String longLat = location.getLongitude() + "--" +
 						location.getLatitude(); 
 				lt.sendGPS(longLat); 
 			} 

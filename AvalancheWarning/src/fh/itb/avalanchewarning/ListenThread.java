@@ -40,7 +40,6 @@ public class ListenThread {
 		try {
 			out = new PrintWriter(socket.getOutputStream(), true);
 			
-			out.write("Info");
 			out.flush();
 			//out.close();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
@@ -65,9 +64,8 @@ public class ListenThread {
 		PrintWriter out;
 		try {
 			out = new PrintWriter(socket.getOutputStream(), true);
-			out.write("Bild");
+			out.println("Bild");
 			out.flush();
-			out.close();
 
 			File myFile = new File(photo.getAbsolutePath());
 			byte[] mybytearray = new byte[(int) myFile.length()];
@@ -76,9 +74,9 @@ public class ListenThread {
 			bis.read(mybytearray, 0, mybytearray.length);
 			OutputStream os = socket.getOutputStream();
 			System.out.println("Sending...");
+			//wenns nicht geht ändere write in println!
 			os.write(mybytearray, 0, mybytearray.length);
 			os.flush();
-			os.close();
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -90,12 +88,12 @@ public class ListenThread {
 		PrintWriter out;
 		
 		try {
+			//write ->println
 			out = new PrintWriter(socket.getOutputStream(), true);
-			out.write("GPS");
+			out.println("GPS");
 			out.flush();
-			out.write(GPSData);
+			out.println(GPSData);
 			out.flush();
-			out.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

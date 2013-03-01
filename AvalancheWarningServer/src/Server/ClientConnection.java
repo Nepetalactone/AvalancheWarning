@@ -30,41 +30,40 @@ public class ClientConnection extends Thread {
 	public void run() {
 		System.out.println("warte auf auszuführende Funktion!");
 		try {
-			_reader = new BufferedReader(new InputStreamReader(
-					_socket.getInputStream()));
-			String message = "";
-			while (message.equals("")) {
+			while (true) {
+				_reader = new BufferedReader(new InputStreamReader(
+						_socket.getInputStream()));
+				String message = "";
 				message = (_reader.readLine());
-			}
-			switch (message) {
-			case "GPS":
-				System.out
-						.println("Wichtige Geoinformationen werden gesendet:");
-				message = "";
-				while (message.equals("")) {
+				System.out.println("Nachricht:" + message);
+				switch (message) {
+				case "GPS":
+					System.out
+							.println("Wichtige Geoinformationen werden gesendet:");
+					message = "";
 					message = (_reader.readLine());
+					System.out.println("Geoinformationen erhalten: " + message);
+					break;
+				case "Bild":
+					System.out.println("Bild wird empfangen");
+					saveFile(_socket.getInputStream());
+					message = "";
+					break;
+				case "Info":
+					_server.sendMessage(_server.getCurrentInformations(), this);
+					message = "";
+					break;
+				default:
+					System.out.println("Invalide Eingabe: " + message);
+					message = "";
 				}
-				System.out.println("Geoinformationen erhalten: Longitude: " + message.split("||")[0]
-						+ ", Latitude: " + message.split("||")[1]);
-				message = "";
-				break;
-			case "Bild":
-				System.out.println("Bild wird empfangen");
-				saveFile(_socket.getInputStream());
-				message = "";
-				break;
-			case "Info":
-				_server.sendMessage(_server.getCurrentInformations(), this);
-				message = "";
-				break;
-			default:
-				System.out.println("Invalide Eingabe: " + message);
-				message = "";
 			}
 		} catch (Exception e) {
-			System.out.println("Fehler bei den gesendeten Dateien");
-			e.printStackTrace();
+			System.out.println("ClientDisconnected");
+			_server.killConnections(this);
+
 		}
+
 	}
 
 	/**
