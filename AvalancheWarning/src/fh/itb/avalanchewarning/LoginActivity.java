@@ -19,6 +19,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
+/**
+ * Dise Aktivity bildet den Loginscreen.
+ * @author Kno
+ *
+ */
 public class LoginActivity extends Activity {
 
 	Button _btnLogin;
@@ -30,6 +35,8 @@ public class LoginActivity extends Activity {
 	RadioGroup _rgLanguage;
 	RadioButton _rbEnglish;
 	RadioButton _rbGerman;
+	
+	Socket socket;
 
 	//String[] _languageGerman;
 	//String[] _languageEnglish;
@@ -157,12 +164,11 @@ public class LoginActivity extends Activity {
 	private boolean checkLogin(String username, String password) {
 //Verbindung zum Server erstellen
 	//	return true;
-		
 		try {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
 			.permitAll().build();
 			StrictMode.setThreadPolicy(policy);
-			Socket socket = new Socket("10.0.2.2", 4711);
+			socket = new Socket("10.0.2.2", 4711);
 			//validätsprüfung
 			
 			PrintWriter out;

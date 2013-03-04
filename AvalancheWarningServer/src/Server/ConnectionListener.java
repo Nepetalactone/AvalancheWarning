@@ -5,6 +5,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
+/**
+ * Diese Klasse nimmt neue Verbindungen an und sendet diese an den Server
+ * @author Kno
+ *
+ */
 public class ConnectionListener extends Thread {
 
 	private Server _server;

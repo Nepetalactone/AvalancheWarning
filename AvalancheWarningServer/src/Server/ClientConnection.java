@@ -16,6 +16,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * Dise Klasse kommuniziert mit einem Client. Sie wartet auf 
+ * eine Nachricht vom client und für daraufhin eine Aktion aus
+ * @author Kno
+ *
+ */
 public class ClientConnection extends Thread {
 
 	Socket _socket;
@@ -41,6 +47,7 @@ public class ClientConnection extends Thread {
 				message = (_reader.readLine());
 				System.out.println("Nachricht:" + message);
 				switch (message) {
+				//GPS informationen werden vom Client benötigt
 				case "GPS":
 					System.out
 							.println("Wichtige Geoinformationen werden gesendet:");
@@ -48,6 +55,7 @@ public class ClientConnection extends Thread {
 					message = (_reader.readLine());
 					System.out.println("Geoinformationen erhalten: " + message);
 					break;
+					//Der Client möchte sich einloggen
 				case "Login":
 					System.out.println("empfange daten");
 					message = (_reader.readLine());
@@ -69,11 +77,13 @@ public class ClientConnection extends Thread {
 					_server.sendMessage(returnmessage, this);
 					System.out.println("login beendet ");
 					break;
+					//Der Client möchte ein Bild senden
 				case "Bild":
 					System.out.println("Bild wird empfangen");
 					saveFile(_socket.getInputStream());
 					message = "";
 					break;
+					//Der Client möchte aktuelle Informationen erhalten
 				case "Info":
 					_server.sendMessage(_server.getCurrentInformations(), this);
 					message = "";

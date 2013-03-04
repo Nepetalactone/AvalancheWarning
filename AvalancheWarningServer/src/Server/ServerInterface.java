@@ -5,6 +5,8 @@ package Server;
  */
 
 /**
+ *Bei dieser Klasse handelt es sich um das Grafische Userinterface
+ *des Servers. Hier können Wetterinformationen und Lawienengefahren aktualisiert werden.
  *
  * @author Kno
  */
@@ -20,22 +22,37 @@ public class ServerInterface extends javax.swing.JFrame {
         choice1.add("Low");
         choice1.add("Medium");
         choice1.add("High");
+        choice1.add("verry High");
+        choice1.add("dangerous");
+        choice1.add("deadly");
 
         choice2.add("Low");
         choice2.add("Medium");
         choice2.add("High");
+        choice2.add("verry High");
+        choice2.add("dangerous");
+        choice2.add("deadly");
 
         choice3.add("Low");
         choice3.add("Medium");
         choice3.add("High");
+        choice3.add("verry High");
+        choice3.add("dangerous");
+        choice3.add("deadly");
 
         choice4.add("Low");
         choice4.add("Medium");
         choice4.add("High");
+        choice4.add("verry High");
+        choice4.add("dangerous");
+        choice4.add("deadly");
 
         choice5.add("Low");
         choice5.add("Medium");
         choice5.add("High");
+        choice5.add("verry High");
+        choice5.add("dangerous");
+        choice5.add("deadly");
         
         _server = new Server(getCurrentInformationen());
         
@@ -267,6 +284,7 @@ public class ServerInterface extends javax.swing.JFrame {
     	String region4 = jTextField6.getText() + "__" + choice4.getSelectedItem();
     	String region5 = jTextField7.getText() + "__" + choice5.getSelectedItem();
     	
+    	//hier werden die wetterinfomrmationen weitergeleitet
     	return wettermorgen +"##"+ wetteruebermorgen +"--"+ region1 +"##"+ region2 +"##"+ region3 +"##"+ region4 +"##"+ region5;
     }
     /**

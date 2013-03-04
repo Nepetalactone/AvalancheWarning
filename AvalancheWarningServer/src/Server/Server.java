@@ -8,6 +8,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Properties;
 
+/**
+ * Diese Klasse Dient als Server. Hier werden Verbindungen gespeichert,
+ * Nachrichten versendet und Verbindungen angenommen
+ * 
+ * @author Kno
+ *
+ */
 public class Server {
 
 	private LinkedList<ClientConnection> _connections;
@@ -49,6 +56,7 @@ public class Server {
 	 */
 	public void addConnection(ClientConnection s) {
 		_connections.add(s);
+		//sendMessage(_currentInformations, s);
 		s.start();
 		
 	}
@@ -70,11 +78,21 @@ public class Server {
 		}
 	}
 	
+	/**
+	 * Diese Methode ruft nur die Methode sendToClient auf
+	 * @param message
+	 * @param cc
+	 */
 	public void sendMessage(String message, ClientConnection cc)
 	{
 		sendToClient(message, cc);
 	}
 	
+	/**
+	 * Dise Methode sendet eine Nachricht an einen Client.
+	 * @param message
+	 * @param cc
+	 */
 	private void sendToClient(String message, ClientConnection cc)
 	{
 		OutputStream raus;
@@ -90,6 +108,11 @@ public class Server {
 			
 		}
 	}
+
+	/**
+	 * Mit dieser Methode können die aktuellen Wetterinformationen gespeichert werden.
+	 * @param informationen
+	 */
 	public void setInformationen(String informationen)
 	{
 		_currentInformations = informationen;
