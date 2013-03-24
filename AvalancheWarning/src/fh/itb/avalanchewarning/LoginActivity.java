@@ -163,7 +163,8 @@ public class LoginActivity extends Activity {
 	 */
 	private boolean checkLogin(String username, String password) {
 //Verbindung zum Server erstellen
-	//	return true;
+		//return true;
+		
 		try {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
 			.permitAll().build();

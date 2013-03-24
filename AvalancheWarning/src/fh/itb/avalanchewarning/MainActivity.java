@@ -213,6 +213,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		tempdata = new TempData();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
@@ -231,8 +232,10 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}*/
 
-		initGPS();
-		initForecast();
+		
+		
+	//	initGPS();
+	//	initForecast();
 
 		storageDir = new File(
 				Environment
@@ -322,7 +325,7 @@ public class MainActivity extends Activity {
 				sendPhotos();
 			}
 		});
-		refreshData();
+		refreshData(); 
 	}
 	
 	//versucht alle GPS-aufzeichnungen zu verschicken
