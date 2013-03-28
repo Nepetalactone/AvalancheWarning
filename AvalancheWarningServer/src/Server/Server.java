@@ -32,7 +32,7 @@ public class Server {
 	}
 	/**
 	 * Diese Methode initialisiert die Benutzernamen und Kennwörter
-	 * der einzellnen Benutzer
+	 * der einzelnen Benutzer
 	 */
 	private void init() {
 		try {

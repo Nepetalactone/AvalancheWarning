@@ -1,27 +1,17 @@
 package fh.itb.avalanchewarning;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.LinkedList;
 import java.util.List;
 
 import android.location.Location;
@@ -29,26 +19,20 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
-	File storageDir;
-	LinkedList<File> photoList;
 	Socket socket;
 	String timeStamp;
 	LocationManager locationManager;
@@ -104,6 +88,7 @@ public class MainActivity extends Activity {
 			System.out.println("Sending...");
 			os.write(mybytearray, 0, mybytearray.length);
 			os.flush();
+			bis.close();
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -233,15 +218,6 @@ public class MainActivity extends Activity {
 
 		initGPS();
 		initForecast();
-
-		storageDir = new File(
-				Environment
-				.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-				"AvalanchePhotos");
-
-		photoList = new LinkedList<File>();
-
-		// refreshPhotoList();
 
 		Spinner spinner = (Spinner) findViewById(R.id.spn_CurrentRegion);
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -375,13 +351,4 @@ public class MainActivity extends Activity {
 			}
 		}
 	}
-
-	private void refreshPhotoList() {
-		photoList = new LinkedList<File>();
-
-		for (File file : storageDir.listFiles()) {
-			photoList.add(file);
-		}
-	}
-
 }

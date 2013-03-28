@@ -190,10 +190,10 @@ public class LoginActivity extends Activity {
 						return true;
 				if(x.equals("Failure"))
 						return false;
-				((EditText)findViewById(R.id.txtUsername)).setText("HURENKIND " + x);
+				//((EditText)findViewById(R.id.txtUsername)).setText(" " + x);
 			return false;
 			} catch (IOException e){
-				((EditText)findViewById(R.id.txtUsername)).setText("HURENKIND2 ");
+				//((EditText)findViewById(R.id.txtUsername)).setText(" ");
 				return false;
 			}
 		} catch (UnknownHostException e) {
