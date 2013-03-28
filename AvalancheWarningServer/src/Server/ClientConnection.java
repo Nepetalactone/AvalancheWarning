@@ -80,6 +80,7 @@ public class ClientConnection extends Thread {
 					break;
 					//Der Client möchte aktuelle Informationen erhalten
 				case "Info":
+					
 					_server.sendMessage(_server.getCurrentInformations(), this);
 					message = "";
 					break;

@@ -39,9 +39,8 @@ public class ListenThread {
 		
 		try {
 			out = new PrintWriter(socket.getOutputStream(), true);
-			
+			out.println("Info");
 			out.flush();
-			//out.close();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
 			
