@@ -98,7 +98,7 @@ public class MainActivity extends Activity {
 
 
 	/**
-	 * Diese Methode aktualisiert die auf der Aktiviti ersichtlichen Daten.
+	 * Diese Methode aktualisiert die auf der Aktivität ersichtlichen Daten.
 	 * Hierfür werden die aktuellen Informationen aus einem TempDataobjekt
 	 * geholt und eingefügt.
 	 */
@@ -238,20 +238,22 @@ public class MainActivity extends Activity {
 
 		});
 		
+		//beim Klick auf den Buton wird ein Foto gemacht und abgespeichert
 		Button btnTakePhoto = (Button) findViewById(R.id.btnTakePhoto);
 		btnTakePhoto.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				 timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+				//Dateiname == aktuelles Datum
+				timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 				  
-				 Intent takePictureIntent = new Intent(
-				 MediaStore.ACTION_IMAGE_CAPTURE); Uri savedImage =
-				 Uri.fromFile(new File("/sdcard/IMG_" + timeStamp + ".png"));
-				 takePictureIntent.putExtra("output", savedImage);
-				 startActivityForResult(takePictureIntent, 1);
+				Intent takePictureIntent = new Intent(
+				MediaStore.ACTION_IMAGE_CAPTURE); Uri savedImage =
+				Uri.fromFile(new File("/sdcard/IMG_" + timeStamp + ".png"));
+				takePictureIntent.putExtra("output", savedImage);
+				startActivityForResult(takePictureIntent, 1);
 				  
-				 galleryAddPic();
+				galleryAddPic();
 				
 			}
 			

@@ -98,7 +98,7 @@ public class ClientConnection extends Thread {
 	}
 
 	/**
-	 * ungetestete Methode zur speicherung einer Datei!
+	 * Methode zur speicherung einer Datei
 	 * 
 	 * @param filename
 	 * @param inputStr

@@ -55,16 +55,11 @@ public class LoginActivity extends Activity {
 		_tfPw = (EditText) findViewById(R.id.pwdUserpassword);
 
 		_rgLanguage = (RadioGroup) findViewById(R.id.radioLanguage);
-		_rbEnglish = (RadioButton) findViewById(R.id.rdoLanguageEnglish);
-		_rbGerman = (RadioButton) findViewById(R.id.rdoLanguageGerman);
 
 		// Listener
 		_btnLogin.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				// LOGIN Button clicked!
-
-				// TODO: Validätsprüfung
-				// TODO: Weiterleitung auf Andere Form
 
 				String enteredUsername = _tfUser.getText().toString();
 				String enteredPassword = _tfPw.getText().toString();

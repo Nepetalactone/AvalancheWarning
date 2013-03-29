@@ -12,6 +12,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import android.os.StrictMode;
 
+
+//verantwortlich für das Senden und Empfangen von Daten
 public class ListenThread {
 
 	private TempData data;
@@ -33,6 +35,7 @@ public class ListenThread {
 		}
 	}
 
+	//aktualisiert den Forecast
 	public void getForecast(){
 		String forecast = "";
 		PrintWriter out;
@@ -59,6 +62,7 @@ public class ListenThread {
 		}
 	}
 
+	//sendet ein Foto
 	public boolean sendPhoto(File photo){
 		
 		Long length = photo.getTotalSpace();
@@ -86,6 +90,7 @@ public class ListenThread {
 		}
 	}
 	
+	//sendet GPS Daten
 	public boolean sendGPS(String GPSData){
 		PrintWriter out;
 		
